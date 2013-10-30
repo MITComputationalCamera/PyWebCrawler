@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+	This is a simple script to display multiple markers on a map
+	Author - Nikhil Naik (naik@mit.edu)
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<title>Google Maps API: Display Markers</title>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" type="text/javascript"></script>
+<script type="text/javascript"> 
+var loopFlag=0;
+var hashtable;
+var panoClient;
+var map;
+
+var latVec = [42.280680,42.280670,42.280140,42.281452,42.281471]; // define latitude for all markers
+var longVec = [-71.055918,-71.054189,-71.055082,-71.054613,-71.055441]; // define longitude for all markers
+
+function initialize() {
+    startLatLng = new google.maps.LatLng(latVec[0],longVec[0]);
+    hashtable = {};
+    panoClient = new google.maps.StreetViewService();      
+    var myOptions = {
+        center: new google.maps.LatLng(42.280680,-71.055918),
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    }; 
+    map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
+    map.setCenter(startLatLng, 15);
+
+    showMarkers(map);
+}
+
+
+function showMarkers(map) {
+    var numid = 0;
+    while(numid < latVec.length) {
+        LatLon = new google.maps.LatLng(latVec[numid], longVec[numid]);
+        var marker = new google.maps.Marker({
+            position: LatLon,
+            map: map,
+        });
+        numid++;
+    }
+}
+
+function handleNoFlash(errorCode) {
+    if (errorCode == 603) {
+        alert("Error: Flash doesn't appear to be supported by your browser");
+        return;
+    }
+}
+
+</script>
+</head>
+
+<body onload="initialize()" onunload="destroy()">
+<div id="map_canvas" style="width: 800px; height: 550px"></div>
+</body>
+
+</html>
